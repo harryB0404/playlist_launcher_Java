@@ -7,7 +7,8 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.BufferedReader;
 import java.io.IOException;
-
+import java.awt.Desktop;
+import java.net.URI;
 
 public class App{
 
@@ -395,6 +396,57 @@ public static void menu_7() {
 }
 
 
+public static void menu_5(){
+    List<Playlist> playlists = read_playlists();
+    
+    if (playlists.isEmpty()) {
+        System.out.println("No playlists available to play videos.");
+        System.out.println("Press Enter to return to menu...");
+        new Scanner(System.in).nextLine();
+        return;
+    }
+    
+    print_playlists(playlists);
+    
+    int plChoice = choice("Select Playlist to play video from (1-" + playlists.size() + "): ", 1, playlists.size());
+    List<Video> videos = playlists.get(plChoice-1).songs;
+    
+    if (videos.isEmpty()) {
+        System.out.println("This playlist has no videos to play.");
+        System.out.println("Press Enter to return to menu...");
+        new Scanner(System.in).nextLine();
+        return;
+    }
+    
+    print_videos(videos);
+    
+    int vidChoice = choice("Select Video to play (1-" + videos.size() + "): ", 1, videos.size());
+    
+    String link = videos.get(vidChoice-1).link;
+    String title = videos.get(vidChoice-1).title;
+    
+    System.out.println("Opening video: " + title);
+    
+    try {
+        Desktop desktop = Desktop.getDesktop();
+        if (desktop.isSupported(Desktop.Action.BROWSE)) {
+            desktop.browse(new URI(link));
+            System.out.println("Video is now playing in your default web browser...");
+            System.out.println("Link: " + link);
+        } else {
+            System.out.println("Browser opening not supported on this system.");
+            System.out.println("Please open this link manually: " + link);
+        }
+    } catch (Exception e) {
+        System.out.println("Cannot open video automatically (error: " + e.getMessage() + ").");
+        System.out.println("Please copy and paste this link into your browser:");
+        System.out.println(link);
+    }
+    
+    System.out.println("\nPress Enter to return to menu...");
+    new Scanner(System.in).nextLine();
+}
+
     public static void menu(){
         show_menu();
         while(true){
@@ -413,7 +465,7 @@ public static void menu_7() {
             }else if (choose == 4){
                 menu_4();
             }else if (choose == 5){
-
+                menu_5();
             }else if (choose == 6){
                 menu_6();
             }else if (choose == 7){
