@@ -316,6 +316,85 @@ public class App{
         }
 
     }
+
+
+    public static void delete_playlist() {
+    Scanner in = new Scanner(System.in);
+    
+    List<Playlist> playlists = read_playlists();
+    
+    if (playlists.size() == 0) {
+        System.out.println("No playlists available to delete.");
+        System.out.println("Press Enter to continue...");
+        in.nextLine();
+        return;
+    }
+    
+    print_playlists(playlists);
+    
+    int plNumber = choice("Enter the playlist number you want to delete (1-" + playlists.size() + "): ", 1, playlists.size());
+    
+    String playlistName = playlists.get(plNumber - 1).name;
+    
+    System.out.print("Are you sure you want to delete \"" + playlistName + "\"? (Y/N): ");
+    String confirm = in.nextLine().trim();
+    
+    if (confirm.equalsIgnoreCase("Y") || confirm.equalsIgnoreCase("yes")) {
+        playlists.remove(plNumber - 1);
+        write_playlists(playlists);
+        System.out.println("Playlist \"" + playlistName + "\" has been deleted successfully.");
+        System.out.println("Data has been updated and saved.");
+    } else {
+        System.out.println("Delete operation cancelled.");
+    }
+    
+    System.out.println("\nPress Enter to return to menu...");
+    in.nextLine();
+}
+
+
+    public static void menu_6() {
+    Scanner in = new Scanner(System.in);
+    System.out.println("All changes are automatically saved after each operation.");
+    System.out.println("Do you want to force save current data again? (Y/N): ");
+    String opt = in.nextLine().trim();
+    
+    if (opt.equalsIgnoreCase("Y") || opt.equalsIgnoreCase("yes")) {
+        List<Playlist> current = read_playlists();
+        write_playlists(current);
+        System.out.println("Data has been saved successfully!!!");
+    } else {
+        System.out.println("No additional save performed.");
+    }
+    
+    System.out.println("\nPress Enter to return to menu...");
+    in.nextLine();
+}
+
+
+public static void menu_7() {
+    Scanner in = new Scanner(System.in);
+    
+    System.out.println("Are you sure you want to save all data and exit? (Y/N): ");
+    String confirm = in.nextLine().trim();
+    
+    if (confirm.equalsIgnoreCase("Y") || confirm.equalsIgnoreCase("yes")) {
+        List<Playlist> current = read_playlists();
+        write_playlists(current);
+        
+        System.out.println("Data saved successfully.");
+        System.out.println("Thank you for using the program!");
+        System.out.println("Goodbye!");
+        
+        System.exit(0);
+    } else {
+        System.out.println("Exit cancelled. Returning to menu...");
+        System.out.println("Press Enter to continue...");
+        in.nextLine();
+    }
+}
+
+
     public static void menu(){
         show_menu();
         while(true){
@@ -330,15 +409,15 @@ public class App{
                 menu_2();
 
             }else if (choose == 3){
-
+                delete_playlist();
             }else if (choose == 4){
                 menu_4();
             }else if (choose == 5){
 
             }else if (choose == 6){
-            
+                menu_6();
             }else if (choose == 7){
-
+                menu_7();
             }else{
                 show_menu();
             }
