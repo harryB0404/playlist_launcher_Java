@@ -23,3 +23,6 @@ Data is stored permanently in plain text files (`playlists.txt` and `videoN.txt`
 3. Compile the program:
    ```bash
    javac App.java
+
+
+## You need to paste full of the web link (eg. 'https://www.google.com') (Not 'google.com')
